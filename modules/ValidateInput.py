@@ -7,6 +7,12 @@ def ValidateAmountInputForm(val,lable = None,min = None,max = None):
             else:
                 break
         except (ZeroDivisionError,ValueError):
-            print(f"Du lieu khong hop le! {f'Trong khoang {min if min else 1} ' + ('->'if(max) else 'tro len') + f' {max}' if (max) else '':}")
+            error_msg = f"Du lieu khong hop le! "
+            if max is not None:
+                error_msg += f"Du lieu trong khoang {format(min, ',d').replace(',', '.') if min is not None else 1}->{format(max, ',d').replace(',', '.')}"
+            else:
+                if min is not None:
+                    error_msg += f"Du lieu trong khoang {format(min, ',d').replace(',', '.')} tro len."
+            print(error_msg)
             val = input(lable)
     return val
