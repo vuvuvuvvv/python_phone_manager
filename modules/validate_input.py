@@ -1,4 +1,4 @@
-def ValidateAmountInputForm(val,lable = None,min = None,max = None):
+def validate_amout_input_field(val,lable = None,min = None,max = None):
     while True:
         try:
             val = int(val)
