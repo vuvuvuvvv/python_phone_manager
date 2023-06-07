@@ -1,0 +1,40 @@
+{
+    "List_Admin": [
+        {
+            "User_name": "congg",
+            "Password": "12345678",
+            "Name" : "Congdeptrai",
+            "ID": "1",
+            "Email": "d@d.d",
+            "Phone_number": "1234567889",
+            "Gender": "1"
+        },
+        {
+            "User_name": "cong",
+            "Password": "123456789",
+            "ID": "2",
+            "Name" : "Congdeptraii",
+            "Email": "d@2.c",
+            "Phone_number": "1234567890",
+            "Gender": "1"
+        },
+        {
+            "User_name": "admin",
+            "Password": "123456789",
+            "ID": "3",
+            "Name" : "unknown",
+            "Email": "admin@email.com",
+            "Phone_number": "0835792003",
+            "Gender": "1"
+        },
+        {
+            "User_name": "cici",
+            "Password": "123456789",
+            "ID": "4",
+            "Name" : "Hot girl tay ho",
+            "Email": "d@f.c",
+            "Phone_number": "1234567890",
+            "Gender": "0"
+        }
+    ]
+}
