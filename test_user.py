@@ -2,35 +2,36 @@ import json
 import re
 from tabulate import *
 
+
 class User:
     def set_id (self, id):
         self.id = id
-        
-    def get_id (self) :
+
+    def get_id(self):
         return self.id
-    
-    def set_name (self, name):
+
+    def set_name(self, name):
         self.name = name
-        
-    def get_name (self) :
+
+    def get_name(self):
         return self.name
-    
-    def set_phone_num (self, phone_num):
+
+    def set_phone_num(self, phone_num):
         self.phone_num = phone_num
-        
-    def get_phone_num (self) :
+
+    def get_phone_num(self):
         return self.phone_num
-    
-    def set_mail (self, mail):
+
+    def set_mail(self, mail):
         self.mail = mail
-        
-    def get_mail (self) :
+
+    def get_mail(self):
         return self.mail
-    
-    def set_gender (self, gender):
+
+    def set_gender(self, gender):
         self.gender = gender
-        
-    def get_gender (self) :
+
+    def get_gender(self):
         return self.gender
 
 session_user = {}
@@ -46,6 +47,7 @@ def save_user_to_json(new_data, filename='./data/client/entries.json'):
         file_data.update(content)
         file.seek(0)
         json.dump(file_data, file, indent=4)
+
 
 # Đẩy 1 user từ "List_Client" lên thành admin trong "List_Admin" và xóa user đó trong "List_Client"
 def add_admin_to_json(order_user, filename='./data/client/entries.json'):
@@ -63,21 +65,24 @@ def check_password(password):
         return True
     else:
         return False
-    
-def check_phone_number (phone):
+
+
+def check_phone_number(phone):
     pattern = r"\d{10}"
     if re.fullmatch(pattern, phone):
         return True
     else:
         return False
 
+
 def check_email(email):
-    pattern = r"\"?([-a-zA-Z0-9.`?{}]+@\w+\.\w+)\"?" 
+    pattern = r"\"?([-a-zA-Z0-9.`?{}]+@\w+\.\w+)\"?"
     if re.fullmatch(pattern, email):
         return True
     else:
         return False
-    
+
+
 def check_name(name):
     pattern = r"^[a-zA-Z\s]+$"
     if re.fullmatch(pattern, name):
@@ -104,8 +109,7 @@ def merge_Client_Admin_lists () :
     return merge
 
 # Form đăng nhập tài khoản
-def login_form () :
-    global session_user
+def login_form():
     print('Chào mừng đến với trang quản trị')
     print('Vui lòng đăng nhập để truy cập!')
     name = input('Nhập tài khoản: ')
@@ -113,25 +117,26 @@ def login_form () :
         if name == e['User_name']:
             print('Vui lòng nhập mật khẩu của bạn.')
             password = input('Nhập mật khẩu: ')
-            for i in range(1,5) :
+            for i in range(1, 5):
                 if password == e['Password']:
                     print(f'Chào {name}, bạn đã đăng nhập thành công!')
                     session_user = e.copy()
                     return True
-                else :
-                    if i < 4 :
+                else:
+                    if i < 4:
                         print('Sai mật khẩu.')
                         password = input(f'Nhập lại mật khẩu (lần {i}/3): ')
-                    else :
+                    else:
                         print("Bạn không thể truy cập vào tài khoản!")
     return False
 
+
 # Form đăng ký tài khoản     
-def register () :
+def register():
     print('Tài khoản của bạn không có trong dữ liệu hệ thống.')
     print('Bạn cần đăng ký tài khoản.')
     tmp_user = User()
-    while True :
+    while True:
         Not_Exist_2 = False
         tmp_user.user_name = input('Vui lòng nhập tên tài khoản của bạn: ')
         merge_AC_list = merge_Client_Admin_lists()
@@ -140,9 +145,9 @@ def register () :
                 Not_Exist_2 = True
                 print("Tài khoản này đã tồn tại!")
                 break
-        if Not_Exist_2 == True :
+        if Not_Exist_2 == True:
             continue
-        while True :
+        while True:
             tmp_user.password = input('Vui lòng nhập mật khẩu của bạn: ')
             if check_password(tmp_user.password) == False:
                 print('Mật khẩu không hợp lệ')
@@ -150,39 +155,39 @@ def register () :
             password_again = input('Nhập lại mật khẩu của bạn: ')
             if (tmp_user.password == password_again):
                 break
-            else :
+            else:
                 print("Mật khẩu không giống nhau!")
                 continue    
         tmp_user.id = len(merge_AC_list)
         while True :
             tmp_user.name = input("Nhập tên của bạn: ")
-            if check_name(tmp_user.name) == False :
+            if check_name(tmp_user.name) == False:
                 print('Tên không hợp lệ')
                 continue
-            else :
+            else:
                 break
-        while True :
+        while True:
             tmp_user.mail = input("Nhập email của bạn: ")
-            if check_email(tmp_user.mail) == False :
+            if check_email(tmp_user.mail) == False:
                 print('Email không hợp lệ')
                 continue
-            else :
+            else:
                 break
-        while True :
+        while True:
             tmp_user.phone_num = input("Nhập số điện thoại của bạn: ")
-            if check_phone_number(tmp_user.phone_num) == False :
+            if check_phone_number(tmp_user.phone_num) == False:
                 print('Số điện thoại không hợp lệ')
                 continue
-            else :
+            else:
                 break
-        while True :
-            tmp_user.gender = input("Chọn giới tính của mình (0: Nữ / 1: Nam): ")
-            if tmp_user.gender == '0' or tmp_user.gender == '1' :
+        while True:
+            tmp_user.gender = input(
+                "Chọn giới tính của mình (0: Nữ / 1: Nam): ")
+            if tmp_user.gender == '0' or tmp_user.gender == '1':
                 break
-            else :
+            else:
                 print('Lựa chọn giới tính không hợp lệ')
-                continue
-                
+                continue             
         new_full = {"User_name": f"{tmp_user.user_name}","Password": f"{tmp_user.password}", "ID": f"{tmp_user.id + 1}", 
                 "Name": f"{tmp_user.name}", "Email": f"{tmp_user.mail}", 
                 "Phone_number": f"{tmp_user.phone_num}", "Gender": f"{tmp_user.gender}"}

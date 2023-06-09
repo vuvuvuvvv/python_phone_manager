@@ -1,2 +1,6 @@
 #Ignore file
+<<<<<<< HEAD
 test1.py
+=======
+*\test.py
+>>>>>>> 72fff9517ca7c5073b514ecd2068ac3c7566f4b4
