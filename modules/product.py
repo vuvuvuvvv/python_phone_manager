@@ -1,24 +1,23 @@
-import copy
-from datetime import *
-from modules.save_data import *
-from modules.dien_thoai import *
-from modules.clear_screen import *
-from modules.validate_input import *
+try:
+    import copy
+    from datetime import *
+    from modules.data import *
+    from modules.dien_thoai import *
+    from modules.system_function import *
+    from modules.validate_input import *
+    from tabulate import tabulate
+    from modules.auth import *
+except Exception as err:
+    print(f"Loi: {err}")
 
-#
-# Mo hinh dictionary danh sach chua dien thoai
-#   ds_dien_thoai = {
-#       id1 = [
-#           dienthoai1,
-#           dienthoai2,
-#           ...
-#       ],
-#       id2 = [...],
-#   }
-#
+status = {
+    0: "Khong hoat dong",
+    1: "Hoat dong"
+}
+
 class Product():
     def __init__(self):
-        pass
+        self.list_dien_thoai = get_dict_product_from_json()['products']
 
     def nhap_dien_thoai(self) -> None:
         # Nhap so san pham
@@ -74,7 +73,7 @@ class Product():
                 # Sau khi khoi tao va hoan thien thong tin => save vao ds_dien_thoai & del
                 # dienthoai sau khi luu
                 #
-                bansao_dungluong_dt = copy.deepcopy(dienthoai)
+                bansao_dt = copy.deepcopy(dienthoai)
                 #Nhap dung luong
                 print('----------------------------')
                 print(f'Nhap loai dung luong thu {"nhat" if j == 0 else j+1}: ')
@@ -87,7 +86,7 @@ class Product():
                         tmp_dung_luong = input(lable_input)
                         tmp_dung_luong = validate_amout_input_field(tmp_dung_luong, lable_input)
                     else:
-                        bansao_dungluong_dt.set_dung_luong(tmp_dung_luong)
+                        bansao_dt.set_dung_luong(tmp_dung_luong)
                         list_dung_luong.append(tmp_dung_luong)
                         break
             
@@ -97,70 +96,92 @@ class Product():
                 #Nhap so loai RAM cho loai dien thoai co dung luong vua nhap
                 print('----------------------------')
                 print("NHAP RAM DIEN THOAI CHO:")
-                print(str(bansao_dungluong_dt))
+                print(str(bansao_dt))
                 print('----------------------------')
-                lable_input = "So luong loai RAM: "
-                so_ram = input(lable_input)
-                so_ram = validate_amout_input_field(so_ram, lable_input)
-                list_ram = []
-                for k in range(0, so_ram):
-                    #Nhap RAM
-                    bansao_ram_dt = copy.deepcopy(bansao_dungluong_dt)
-                    print('----------------------------')
-                    print(f'Nhap loai RAM thu {"nhat" if k == 0 else k+1}: ')
-                    lable_input = "Nhap RAM (GB): "
-                    tmp_ram = input(lable_input)
-                    tmp_ram = validate_amout_input_field(tmp_ram, lable_input)
-                    while True:
-                        if tmp_ram in list_ram:
-                            print(f"RAM {tmp_ram}GB da co san!")
-                            tmp_ram = input(lable_input)
-                            tmp_ram = validate_amout_input_field(tmp_ram, lable_input)
-                        else:
-                            bansao_ram_dt.set_ram(tmp_ram)
-                            list_ram.append(tmp_ram)
-                            break
+                lable_input = "Nhap RAM (GB): "
+                tmp_ram = input(lable_input)
+                tmp_ram = validate_amout_input_field(tmp_ram, lable_input)
+                bansao_dt.set_ram(tmp_ram)
 
-                    #Clear screen
-                    clear_screen()
+                #Clear screen
+                clear_screen()
 
-                    #Hoan thien gia ban, so luong, nam san xuat cho dien thoai 
-                    print('----------------------------')
-                    print('HOAN THIEN THONG TIN CHO: ')
-                    print(str(bansao_ram_dt))
-                    #Gia ban
-                    lable_input = "Gia ban (VND): "
-                    tmp_gia = input(lable_input)
-                    tmp_gia = validate_amout_input_field(tmp_gia, lable_input,1000000)
-                    bansao_ram_dt.set_gia(tmp_gia)
-                    #So luong
-                    lable_input = "So luong: "
-                    tmp_so_luong = input(lable_input)
-                    tmp_so_luong = validate_amout_input_field(tmp_so_luong, lable_input)
-                    bansao_ram_dt.set_so_luong(tmp_so_luong)
-                    #Nam san xuat
-                    lable_input = "Nam san xuat: "
-                    tmp_nam_sxuat = input(lable_input)
-                    tmp_nam_sxuat = validate_amout_input_field(tmp_nam_sxuat, lable_input,1900, datetime.now().year)
-                    bansao_ram_dt.set_nam_sxuat(tmp_nam_sxuat)
-                    bansao_ram_dt.set_ngay_khoi_tao(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
-                    #Save
-                    save_product_to_json_file(bansao_ram_dt.get_dict_thongtin_dienthoai())
-
-                    del bansao_ram_dt
-                    #Clear screen
-                    # clear_screen()
-
-                del bansao_dungluong_dt
+                #Hoan thien gia ban, so luong, nam san xuat cho dien thoai 
+                print('----------------------------')
+                print('HOAN THIEN THONG TIN CHO: ')
+                print(str(bansao_dt))
+                #Gia ban
+                lable_input = "Gia ban (VND): "
+                tmp_gia = input(lable_input)
+                tmp_gia = validate_amout_input_field(tmp_gia, lable_input,1000000)
+                bansao_dt.set_gia(tmp_gia)
+                #So luong
+                lable_input = "So luong: "
+                tmp_so_luong = input(lable_input)
+                tmp_so_luong = validate_amout_input_field(tmp_so_luong, lable_input)
+                bansao_dt.set_so_luong(tmp_so_luong)
+                #Nam san xuat
+                lable_input = "Nam san xuat: "
+                tmp_nam_sxuat = input(lable_input)
+                tmp_nam_sxuat = validate_amout_input_field(tmp_nam_sxuat, lable_input,1900, datetime.now().year)
+                bansao_dt.set_nam_sxuat(tmp_nam_sxuat)
+                bansao_dt.set_ngay_khoi_tao(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+                #Save
+                save_product_to_json_file(bansao_dt.get_dict_thongtin_dienthoai())
+                #Clear screen
+                clear_screen()
+                del bansao_dt
             #Xoa dien thoai
             del dienthoai
 
+    def xuat_dien_thoai(self) -> None:
+        auth = Auth()
+        data = []
+        header = ['Ten san pham','Hang san xuat','Dung luong','RAM','Gia ban','Nam san xuat']
+        # Neu la Admin thi hien thi ca san pham khong con hoat dong va trang thai cua tat ca san pham
+        if auth.is_admin():
+            header.append('Trang thai')
+        for dienthoai in self.list_dien_thoai:
+            row = [
+                f"{dienthoai['ten']} {dienthoai['dung_luong']} GB",
+                f"{dienthoai['hang']}",
+                f"{dienthoai['dung_luong']} GB",
+                f"{dienthoai['ram']} GB",
+                f"{format(dienthoai['gia'], ',d').replace(',', '.')}VND",
+                f"{dienthoai['nam_sxuat']}"
+            ]
+            if auth.is_admin():
+                row.append(f"{status[dienthoai['status']]}")
+                data.append(row)
+            else:
+                if dienthoai['status'] == 1:
+                    data.append(row)
+        table = tabulate(data, header, tablefmt="grid")
+        clear_screen()
+        print("DANH SACH SAN PHAM")
+        print(table)
+
     #No return
-    def xuat_dien_thoai() -> None:
-        pass
-    #No return
-    def xoa_dien_thoai_theo_id() -> None:
-        pass
+    def xoa_dien_thoai(self,order_phone):
+        if len(self.list_dien_thoai) == 0:
+            print("Danh sach dien thoai rong!")
+        else:
+            order_phone = input('Nhap id dien thoai muon xoa:')
+            order_phone = validate_amout_input_field(order_phone)
+            try:
+                with open('./data/client/entries.json', 'w') as file:
+                    order_phone -= 1
+                    phone_deleted = self.list_dien_thoai[order_phone]
+                    index = self.list_dien_thoai.index(phone_deleted)
+
+                    self.list_dien_thoai.pop(index)
+
+                    json.dump(self.dict_user, file, indent=4)
+                #Renew data
+                self.dict_user = get_dict_product_from_json()
+            # print("Xóa thành công!")
+            except Exception as err:
+                print(f"Loi: {err}")
 
     #Return class
     def tim_kiem_dien_thoai_theo_id() -> dict:

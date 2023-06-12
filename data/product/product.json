@@ -1,1 +1,100 @@
-{"products": []}
+{
+    "products": [
+        {
+            "id": 1,
+            "ten": "Iphone 11",
+            "hang": "Apple",
+            "dung_luong": 64,
+            "ram": 4,
+            "so_luong": 20000,
+            "gia": 12000000,
+            "nam_sxuat": 2021,
+            "status": 0,
+            "ngay_khoi_tao": "2023-01-13 15:21:14"
+        },
+        {
+            "id": 1,
+            "ten": "Iphone 11",
+            "hang": "Apple",
+            "dung_luong": 128,
+            "ram": 4,
+            "so_luong": 1200000,
+            "gia": 14000000,
+            "nam_sxuat": 2021,
+            "status": 0,
+            "ngay_khoi_tao": "2023-09-17 15:21:14"
+        },
+        {
+            "id": 2,
+            "ten": "Galaxy S21",
+            "hang": "Samsung",
+            "dung_luong": 128,
+            "ram": 8,
+            "so_luong": 15000,
+            "gia": 15000000,
+            "nam_sxuat": 2021,
+            "status": 1,
+            "ngay_khoi_tao": "2023-01-12 15:21:14"
+        },
+        {
+            "id": 3,
+            "ten": "Pixel 5",
+            "hang": "Google",
+            "dung_luong": 128,
+            "ram": 8,
+            "so_luong": 10000,
+            "gia": 13000000,
+            "nam_sxuat": 2020,
+            "status": 1,
+            "ngay_khoi_tao": "2023-06-12 15:21:14"
+        },
+        {
+            "id": 3,
+            "ten": "Pixel 5",
+            "hang": "Google",
+            "dung_luong": 256,
+            "ram": 8,
+            "so_luong": 20000,
+            "gia": 13000000,
+            "nam_sxuat": 2020,
+            "status": 1,
+            "ngay_khoi_tao": "2023-06-12 15:21:14"
+        },
+        {
+            "id": 4,
+            "ten": "OnePlus 9",
+            "hang": "OnePlus",
+            "dung_luong": 256,
+            "ram": 12,
+            "so_luong": 8000,
+            "gia": 18000000,
+            "nam_sxuat": 2021,
+            "status": 1,
+            "ngay_khoi_tao": "2023-04-12 15:21:14"
+        },
+        {
+            "id": 5,
+            "ten": "Mi 11",
+            "hang": "Xiaomi",
+            "dung_luong": 256,
+            "ram": 8,
+            "so_luong": 12000,
+            "gia": 14000000,
+            "nam_sxuat": 2021,
+            "status": 1,
+            "ngay_khoi_tao": "2023-03-12 15:21:14"
+        },
+        {
+            "id": 6,
+            "ten": "Mate 40 Pro",
+            "hang": "Huawei",
+            "dung_luong": 256,
+            "ram": 8,
+            "so_luong": 5000,
+            "gia": 16000000,
+            "nam_sxuat": 2020,
+            "status": 1,
+            "ngay_khoi_tao": "2023-05-12 15:21:14"
+        }
+    ]
+}

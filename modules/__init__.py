@@ -1,7 +1,7 @@
 # Ham ho tro
 from modules.validate_input import *
-from modules.clear_screen import *
-from modules.save_data import *
+from modules.system_function import *
+from modules.data import *
 
 
 # Class

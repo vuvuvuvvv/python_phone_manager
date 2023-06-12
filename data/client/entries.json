@@ -1,60 +1,78 @@
 {
-    "List_Admin": [
+    "list_admin": [
         {
-            "User_name": "congg",
-            "Password": "12345678",
-            "Name": "Congdeptrai",
-            "ID": "1",
-            "Email": "d@d.d",
-            "Phone_number": "1234567889",
-            "Gender": "1"
+            "username": "congg",
+            "password": "12345678",
+            "id": 1,
+            "name": "cc",
+            "mail": "d@d.d",
+            "phone_num": "1234567889",
+            "gender": 2,
+            "role":1,
+            "status": 1,
+            "ngay_khoi_tao": "2023-06-12 15:21:14"
         },
         {
-            "User_name": "admin",
-            "Password": "123456789",
-            "ID": "3",
-            "Name": "unknown",
-            "Email": "admin@email.com",
-            "Phone_number": "0835792003",
-            "Gender": "1"
+            "username": "admin",
+            "password": "123456789",
+            "id": 3,
+            "name": "unknown",
+            "mail": "admin@email.com",
+            "phone_num": "0835792003",
+            "gender": 2,
+            "role":1,
+            "status": 1,
+            "ngay_khoi_tao": "2023-06-12 15:21:14"
         },
         {
-            "User_name": "cici",
-            "Password": "123456789",
-            "ID": "4",
-            "Name": "Hot girl tay ho",
-            "Email": "d@f.c",
-            "Phone_number": "1234567890",
-            "Gender": "0"
+            "username": "cici",
+            "password": "123456789",
+            "id": 4,
+            "name": "Hot girl tay ho",
+            "mail": "d@f.c",
+            "phone_num": "1234567890",
+            "gender": 1,
+            "role":1,
+            "status": 1,
+            "ngay_khoi_tao": "2023-06-12 15:21:14"
         }
     ],
-    "List_Client": [
+    "list_client": [
         {
-            "User_name": "cong",
-            "Password": "123456789",
-            "ID": "2",
-            "Name": "Congdeptraii",
-            "Email": "d@2.c",
-            "Phone_number": "1234567890",
-            "Gender": "1"
+            "username": "cong",
+            "password": "123456789",
+            "id": 2,
+            "name": "Congdeptraii",
+            "mail": "d@2.c",
+            "phone_num": "1234567890",
+            "gender": 2,
+            "role":0,
+            "status": 1,
+            "ngay_khoi_tao": "2023-06-12 15:21:14"
         },
         {
-            "User_name": "hellokitty",
-            "Password": "11223344",
-            "ID": "5",
-            "Name": "Pham Thanh Cong",
-            "Email": "h@d.c",
-            "Phone_number": "0011223344",
-            "Gender": "1"
+            "username": "hellokitty",
+            "password": "11223344",
+            "id": 5,
+            "name": "Pham Thanh Cong",
+            "mail": "h@d.c",
+            "phone_num": "0011223344",
+            "gender": 2,
+            "role":0,
+            "status": 1,
+            "ngay_khoi_tao": "2023-06-12 15:21:14"
         },
         {
-            "User_name": "lmfao",
-            "Password": "daylapass",
-            "ID": "6",
-            "Name": "Cong rat dep trai",
-            "Email": "test@email.com",
-            "Phone_number": "0987654321",
-            "Gender": "1"
+            "username": "lmfao",
+            "password": "daylapass",
+            "id": 6,
+            "name": "Cong rat dep trai",
+            "mail": "test@email.com",
+            "phone_num": "0987654321",
+            "gender": 2,
+            "role":0,
+            "status": 1,
+            "ngay_khoi_tao": "2023-06-12 15:21:14"
         }
     ]
 }
