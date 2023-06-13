@@ -95,6 +95,18 @@
             "nam_sxuat": 2020,
             "status": 1,
             "ngay_khoi_tao": "2023-05-12 15:21:14"
+        },
+        {
+            "id": 7,
+            "ten": "Iphone 14",
+            "hang": "Apple",
+            "dung_luong": 128,
+            "ram": 8,
+            "so_luong": 120000,
+            "gia": 24000000,
+            "nam_sxuat": 2022,
+            "status": 0,
+            "ngay_khoi_tao": "2023-09-17 15:21:14"
         }
     ]
 }

@@ -135,31 +135,34 @@ class Product():
             del dienthoai
 
     def xuat_dien_thoai(self) -> None:
-        auth = Auth()
-        data = []
-        header = ['Ten san pham','Hang san xuat','Dung luong','RAM','Gia ban','Nam san xuat']
-        # Neu la Admin thi hien thi ca san pham khong con hoat dong va trang thai cua tat ca san pham
-        if auth.is_admin():
-            header.append('Trang thai')
-        for dienthoai in self.list_dien_thoai:
-            row = [
-                f"{dienthoai['ten']} {dienthoai['dung_luong']} GB",
-                f"{dienthoai['hang']}",
-                f"{dienthoai['dung_luong']} GB",
-                f"{dienthoai['ram']} GB",
-                f"{format(dienthoai['gia'], ',d').replace(',', '.')}VND",
-                f"{dienthoai['nam_sxuat']}"
-            ]
+        try:
+            auth = Auth()
+            data = []
+            header = ['Ten san pham','Hang san xuat','Dung luong','RAM','Gia ban','Nam san xuat']
+            # Neu la Admin thi hien thi ca san pham khong con hoat dong va trang thai cua tat ca san pham
             if auth.is_admin():
-                row.append(f"{status[dienthoai['status']]}")
-                data.append(row)
-            else:
-                if dienthoai['status'] == 1:
+                header.append('Trang thai')
+            for dienthoai in self.list_dien_thoai:
+                row = [
+                    f"{dienthoai['ten']} {dienthoai['dung_luong']} GB",
+                    f"{dienthoai['hang']}",
+                    f"{dienthoai['dung_luong']} GB",
+                    f"{dienthoai['ram']} GB",
+                    f"{format(dienthoai['gia'], ',d').replace(',', '.')}VND",
+                    f"{dienthoai['nam_sxuat']}"
+                ]
+                if auth.is_admin():
+                    row.append(f"{status[dienthoai['status']]}")
                     data.append(row)
-        table = tabulate(data, header, tablefmt="grid")
-        clear_screen()
-        print("DANH SACH SAN PHAM")
-        print(table)
+                else:
+                    if dienthoai['status'] == 1:
+                        data.append(row)
+            table = tabulate(data, header, tablefmt="grid")
+            clear_screen()
+            print("DANH SACH SAN PHAM")
+            print(table)
+        except Exception as err:
+            print(f"Loi: {err}")
 
     #No return
     def xoa_dien_thoai(self,order_phone):
@@ -183,9 +186,40 @@ class Product():
             except Exception as err:
                 print(f"Loi: {err}")
 
-    #Return class
-    def tim_kiem_dien_thoai_theo_id() -> dict:
-        pass
+    #Find by name
+    def find_product_by_condition(self,property,value) -> dict:
+        get_all_product = sorted(self.list_dien_thoai,key=lambda x: x[property])
+        list_product = []
+        #Find by product name
+        for item in get_all_product:
+            if property == "ten":
+                #Lower case va be nho ten san pham de so sanh
+                pr_name = item["ten"].lower().split(" ")
+                #Kiem tra tu khoa tim kiem
+                #Co 2 tu tro len: -> Be nho de so sanh va tim kiem
+                if " " in value:
+                    keywords = value.lower().split(" ")
+                    #Lap theo tung tu co trong keyword
+                    for letter in keywords:
+                        #Neu co trong ten san pham => Add vao list
+                        if str(letter) in pr_name:
+                            #Check trung san pham
+                            if item not in list_product:
+                                list_product.append(item)
+                else:
+                    if value in pr_name:
+                        if item not in list_product:
+                            list_product.append(item)
+            #Find by other property (Hang, nam san xuat,...)
+            else:
+                if value in item[property]:
+                    if item not in list_product:
+                        list_product.append(item)
+        #Tra ve ket qua
+        if len(list_product) == 0:
+            return None
+        else:
+            return list_product
 
     #No return
     def sap_xep_danh_sach_dien_thoai() -> None:

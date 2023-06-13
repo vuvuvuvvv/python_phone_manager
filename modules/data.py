@@ -16,7 +16,21 @@ def save_product_to_json_file(new_data=None) -> None:
 def truncate_product_data() -> None:
     try:
         with open("./data/product/product.json", "w") as json_file: 
-            json.dump("", json_file)
+            data = {}
+            data['products'] = []
+            json.dump(data, json_file)
+    except Exception as err:
+        print(f"Loi: {err}")
+        
+def get_dict_product_from_json() -> None:
+    try:
+        with open("./data/product/product.json", "r") as product_json_file:
+            # Thực hiện các hoạt động trên tệp
+            try:
+                data = json.load(product_json_file)        
+                return data
+            except Exception as err:
+                print(f"Loi: {err}")
     except Exception as err:
         print(f"Loi: {err}")
         
@@ -30,17 +44,6 @@ def truncate_user_data() -> None:
     except Exception as err:
         print(f"Loi: {err}")
 
-def get_dict_product_from_json() -> None:
-    try:
-        with open("./data/product/product.json", "r") as product_json_file:
-            # Thực hiện các hoạt động trên tệp
-            try:
-                data = json.load(product_json_file)        
-                return data
-            except Exception as err:
-                print(f"Loi: {err}")
-    except Exception as err:
-        print(f"Loi: {err}")
 
 def get_dict_user_from_json() -> None:
     try:
@@ -65,5 +68,17 @@ def save_user_to_json_file(new_data=None) -> None:
                     json.dump(data, json_file,indent=4)
             except Exception as err:
                 print(f"Loi: {err}")
+    except Exception as err:
+        print(f"Loi: {err}")
+
+def save_cart_item_to_json_file():
+    pass
+
+def truncate_cart_data() -> None:
+    try:
+        with open("./data/cart/cart.json", "w") as json_file: 
+            data = {}
+            data['cart'] = []
+            json.dump(data, json_file)
     except Exception as err:
         print(f"Loi: {err}")

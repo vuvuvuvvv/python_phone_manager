@@ -20,8 +20,15 @@ def validate_amout_input_field(val,lable = None,min = None,max = None):
             val = input(lable)
     return val
 
+def check_username(username):
+    pattern = r"^[a-zA-Z0-9]{8,}"
+    if re.fullmatch(pattern, username):
+        return True
+    else:
+        return False
+
 def check_password(password):
-    pattern = r"^[A-Z](?=.*[@_&#])[a-zA-Z0-9]{7,}"
+    pattern = r"^[A-Z][a-zA-Z0-9]{7,}"
     if re.fullmatch(pattern, password):
         return True
     else:

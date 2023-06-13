@@ -33,7 +33,7 @@ class User:
         self.gender = None #1: Female / 2: Male
         self.address = None
         self.role = 0 #0: customer, 1: admin
-        self.status = None
+        self.status = 1
         self.ngay_khoi_tao = None
 
     def get_dict_tt_user(self):
@@ -65,7 +65,7 @@ class User:
             ]
             data.append(row)
         table = tabulate(data, header, tablefmt="grid")
-        clear_screen()
+        # clear_screen()
         print("DANH SACH NGUOI DUNG")
         print(table)
 
@@ -93,3 +93,24 @@ class User:
             # print("Xóa thành công!")
             except Exception as err:
                 print(f"Loi: {err}")
+
+    def find_user_by_id_or_username(self, key):
+        #Get all user & sort by Id
+        if isinstance(key,int):
+            property = "id"
+        else:
+            property = "username"
+        get_all_user = sorted((self.dict_user['list_admin'] + self.dict_user['list_client']),key=lambda x: x[property])
+        left = 0
+        right = len(get_all_user) - 1
+
+        while left <= right:
+            mid = (left + right) // 2
+
+            if get_all_user[mid][property] == key:
+                return get_all_user[mid]
+            elif get_all_user[mid][property] < key:
+                left = mid + 1
+            else:
+                right = mid - 1
+        return None
