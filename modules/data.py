@@ -1,4 +1,6 @@
 import json
+import os
+import modules.auth as auth_data
 def save_product_to_json_file(new_data=None) -> None:
     try:
         with open("./data/product/product.json", "r") as json_file:
@@ -28,7 +30,7 @@ def get_dict_product_from_json() -> None:
             # Thực hiện các hoạt động trên tệp
             try:
                 data = json.load(product_json_file)        
-                return data
+                return data['products']
             except Exception as err:
                 print(f"Loi: {err}")
     except Exception as err:
@@ -57,28 +59,66 @@ def get_dict_user_from_json() -> None:
     except Exception as err:
         print(f"Loi: {err}")
 
-def save_user_to_json_file(new_data=None) -> None:
+def save_user_to_json_file(new_data) -> None:
     try:
         with open("./data/client/entries.json", "r") as user_json_file:
             # Thực hiện các hoạt động trên tệp
             try:
                 data = json.load(user_json_file)            
                 data['list_client'].append(new_data)
-                with open("./data/product/product.json", "w") as json_file:
+                with open("./data/client/entries.json", "w") as json_file:
                     json.dump(data, json_file,indent=4)
             except Exception as err:
                 print(f"Loi: {err}")
     except Exception as err:
-        print(f"Loi: {err}")
-
-def save_cart_item_to_json_file():
-    pass
+        print(f"Loi (in: {os.path.abspath(__file__)}): {err}")
 
 def truncate_cart_data() -> None:
-    try:
+        data = None
+        with open("./data/cart/cart.json", "r") as user_json_file:
+        # Thực hiện các hoạt động trên tệp
+            data = json.load(user_json_file)    
+            data['cart'][str(auth_data.Auth().session_user['id'])] = []
         with open("./data/cart/cart.json", "w") as json_file: 
-            data = {}
-            data['cart'] = []
-            json.dump(data, json_file)
+            json.dump(data, json_file,indent=4)
+
+def get_dict_cart_from_json() -> None:
+    auth = auth_data.Auth()  
+    while True:
+        try:
+            with open("./data/cart/cart.json", "r") as user_json_file:
+                    data = json.load(user_json_file)  
+            return data['cart'][str(auth.session_user['id'])]
+        except Exception:
+            truncate_cart_data()
+            pass
+
+
+def save_cart_item_to_json_file(cart_item):
+    auth = auth_data.Auth()
+    #TODO
+    try:
+        with open("./data/cart/cart.json", "r") as user_json_file:
+            # Thực hiện các hoạt động trên tệp
+            data = json.load(user_json_file)
+            try:
+                len(data['cart'][str(auth.session_user['id'])])
+            except Exception: 
+                data['cart'][str(auth.session_user['id'])] = []
+            data['cart'][str(auth.session_user['id'])].append(cart_item)
+        with open("./data/cart/cart.json", "w") as json_file:
+            json.dump(data, json_file,indent=4)
     except Exception as err:
         print(f"Loi: {err}")
+
+def update_cart_item_to_json_file(cart_item):
+    auth = auth_data.Auth()
+    with open("./data/cart/cart.json", "r") as user_json_file:
+        # Thực hiện các hoạt động trên tệp
+        data = json.load(user_json_file)     
+        for item in data['cart'][str(auth.session_user['id'])]:
+            if cart_item['product'] == item['product']:
+                data['cart'][str(auth.session_user['id'])][data['cart'][str(auth.session_user['id'])].index(item)]['quantity'] = cart_item['quantity']
+                break
+    with open("./data/cart/cart.json", "w") as json_file:
+        json.dump(data, json_file,indent=4)

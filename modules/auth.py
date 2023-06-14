@@ -1,31 +1,17 @@
-
-try:
-    import json
-    from tabulate import *
-    from modules.user import *
-    from modules.data import *
-    from modules.validate_input import *
-    from datetime import *
-except ImportError:
-    pass
+from tabulate import *
+from modules.user import *
+import modules.data as auth_data
+from modules.validate_input import *
+from datetime import *
 
 
 class Auth():
     def __init__(self) -> None:
         self.id = None
         self.session_user = {}
-        self.dict_user = get_dict_user_from_json()
+        self.session_user['id'] = 2
+        self.dict_user = auth_data.get_dict_user_from_json()
         self.get_all_user = self.dict_user["list_admin"] + self.dict_user["list_client"]
-
-    # Đẩy 1 user từ "list_client" lên thành admin trong "list_admin" và xóa user đó trong "list_client"
-    def add_admin_to_json(self,order_user, filename='./data/client/entries.json'):
-        with open(filename, 'w') as file:
-            tmp = self.dict_user['list_client'][order_user-1]
-            del self.dict_user['list_client'][order_user-1]
-            self.dict_user['list_admin'].append(tmp)
-            file.seek(0)
-            json.dump(self.dict_user, file, indent=4)
-        print("Đã cấp quyền admin thành công!")
 
     # Form đăng nhập tài khoản
     def login_form(self, dict_user = None):
@@ -51,7 +37,7 @@ class Auth():
                         else:
                             login_attempt += 1
                             if(login_attempt > 3):
-                                print('Dang nhap that bai! Thoat dang nhap.')
+                                print('Đăng nhập thất bại! Thoát đăng nhập.')
                                 return False
                             print('Sai mật khẩu.')
                             password = input(f'Nhập lại mật khẩu (lần {login_attempt}/3): ')
@@ -67,41 +53,41 @@ class Auth():
         tmp_user.set_id(len(self.get_all_user) + 1)
         while True:
             is_username_exists = False
-            tmp_user.username = input('Nhap ten dang nhap: ')
+            tmp_user.username = input('Nhập tên đăng nhập: ')
             if check_username(tmp_user.username):
                 for x in self.get_all_user:
                     if tmp_user.username == x['username']:
                         is_username_exists = True
-                        print("Ten dang nhap da duoc su dung!")
+                        print("Tên đăng nhập đã được sử dụng!")
                         break
                 if is_username_exists == True:
                     continue
                 else:
                     break
             else:
-                print("Ten dang nhap co it nhat 8 ky tu bao gom chu in hoa, chu thuong va so")
+                print("Tên đăng nhập phải có 8 ký tự bao gồm chữ thường, chữ in hoa, chữ số")
                 continue
 
         while True:
-            tmp_password = input('Vui long nhap mat khau: ')
+            tmp_password = input('Vui lòng nhập mật khẩu: ')
             if not check_password(tmp_password):
-                print("Mat khau co it nhat 8 ky tu, bat dau bang chu in hoa")
+                print("Mật khẩu có ít nhất 8 ký tự, bắt đầu bằng chữ in hoa")
                 continue
             else:
                 break
         while True:
-            password_again = input('Nhap lai mat khau: ')
+            password_again = input('Nhập lại mật khẩu: ')
             if (tmp_password == password_again):
                 tmp_user.password = tmp_password
                 break
             else:
-                print("Mat khau khong giong nhau!")
+                print("Mật khẩu không giống!")
                 continue 
 
         while True :
-            tmp_user.name = input("Nhap ho ten: ")
+            tmp_user.name = input("Nhập họ tên: ")
             if not check_name(tmp_user.name):
-                print('Ten khong hop le')
+                print('Tên không hợp lệ')
                 continue
             else:
                 break
@@ -124,7 +110,7 @@ class Auth():
         tmp_user.gender = checkSelect([1,2])  
 
         tmp_user.ngay_khoi_tao = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        save_product_to_json_file(tmp_user.get_dict_tt_user())
+        auth_data.save_product_to_json_file(tmp_user.get_dict_tt_user())
         print('Tai khoan da duoc them vao he thong!')
         self.login_form(tmp_user.get_dict_tt_user())
 

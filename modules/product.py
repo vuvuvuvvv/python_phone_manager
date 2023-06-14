@@ -1,14 +1,13 @@
-try:
-    import copy
-    from datetime import *
-    from modules.data import *
-    from modules.dien_thoai import *
-    from modules.system_function import *
-    from modules.validate_input import *
-    from tabulate import tabulate
-    from modules.auth import *
-except Exception as err:
-    print(f"Loi: {err}")
+import copy
+from datetime import *
+from modules.data import *
+from modules.cart import *
+from modules.auth import *
+from modules.dien_thoai import *
+from modules.system_function import *
+from modules.validate_input import *
+from tabulate import tabulate
+
 
 status = {
     0: "Khong hoat dong",
@@ -17,7 +16,7 @@ status = {
 
 class Product():
     def __init__(self):
-        self.list_dien_thoai = get_dict_product_from_json()['products']
+        self.list_dien_thoai = get_dict_product_from_json()
 
     def nhap_dien_thoai(self) -> None:
         # Nhap so san pham
@@ -125,7 +124,6 @@ class Product():
                 tmp_nam_sxuat = input(lable_input)
                 tmp_nam_sxuat = validate_amout_input_field(tmp_nam_sxuat, lable_input,1900, datetime.now().year)
                 bansao_dt.set_nam_sxuat(tmp_nam_sxuat)
-                bansao_dt.set_ngay_khoi_tao(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
                 #Save
                 save_product_to_json_file(bansao_dt.get_dict_thongtin_dienthoai())
                 #Clear screen
@@ -134,21 +132,24 @@ class Product():
             #Xoa dien thoai
             del dienthoai
 
-    def xuat_dien_thoai(self) -> None:
+    def xuat_dien_thoai(self, list_product = None) -> None:
         try:
             auth = Auth()
+            if list_product is None:
+                list_product = self.list_dien_thoai
             data = []
-            header = ['Ten san pham','Hang san xuat','Dung luong','RAM','Gia ban','Nam san xuat']
+            header = ['Ten san pham','Hang san xuat','Dung luong','RAM','Gia ban','So luong','Nam san xuat']
             # Neu la Admin thi hien thi ca san pham khong con hoat dong va trang thai cua tat ca san pham
             if auth.is_admin():
                 header.append('Trang thai')
-            for dienthoai in self.list_dien_thoai:
+            for dienthoai in list_product:
                 row = [
                     f"{dienthoai['ten']} {dienthoai['dung_luong']} GB",
                     f"{dienthoai['hang']}",
                     f"{dienthoai['dung_luong']} GB",
                     f"{dienthoai['ram']} GB",
                     f"{format(dienthoai['gia'], ',d').replace(',', '.')}VND",
+                    f"{dienthoai['so_luong']}",
                     f"{dienthoai['nam_sxuat']}"
                 ]
                 if auth.is_admin():
@@ -157,15 +158,14 @@ class Product():
                 else:
                     if dienthoai['status'] == 1:
                         data.append(row)
-            table = tabulate(data, header, tablefmt="grid")
-            clear_screen()
+            table = tabulate(data, header, tablefmt="fancy_grid")
+            # clear_screen()
             print("DANH SACH SAN PHAM")
             print(table)
         except Exception as err:
             print(f"Loi: {err}")
 
-    #No return
-    def xoa_dien_thoai(self,order_phone):
+    def xoa_dien_thoai(self,order_phone) -> None:
         if len(self.list_dien_thoai) == 0:
             print("Danh sach dien thoai rong!")
         else:
@@ -222,5 +222,41 @@ class Product():
             return list_product
 
     #No return
-    def sap_xep_danh_sach_dien_thoai() -> None:
-        pass
+    def sap_xep_danh_sach_dien_thoai(self, property, reverse = False) -> None:
+        return sorted(self.list_dien_thoai,key=lambda x: x[property], reverse=reverse)
+    
+    def add_to_cart(self, list_product = None) -> None:
+        cart = Cart()
+        auth = Auth()
+        dienthoai = DienThoai()
+        if list_product is None:
+            list_product = self.list_dien_thoai
+        self.xuat_dien_thoai(list_product)
+        lable = "Chon san pham muon them vao gio hang: "
+        select = input(lable)
+        select = validate_amout_input_field(select,lable,1,len(list_product))
+        uid = auth.session_user['id']
+        current_cart = cart.get_product_in_cart
+        product_selected = list_product[select - 1]
+        clear_screen()
+        self.xuat_dien_thoai(list_product)
+        print(dienthoai.show_tt_dt(product_selected))
+        print("-------------------------------")
+        lable = "Nhap so luong san pham muon mua: "
+        quantity = input(lable)
+        quantity = validate_amout_input_field(quantity,lable,1,product_selected['so_luong'])
+
+        cart.user_id = uid
+        cart.product = product_selected
+        cart.quantity = quantity
+        produc_is_exists_in_cart = False
+        for item in current_cart:
+            if item["product"] == product_selected:
+                cart.quantity += item['quantity']
+                produc_is_exists_in_cart = True
+                update_cart_item_to_json_file(cart.get_cart_item())
+                break
+        if not produc_is_exists_in_cart:
+            save_cart_item_to_json_file(cart.get_cart_item())
+        clear_screen()
+        cart.show_cart()

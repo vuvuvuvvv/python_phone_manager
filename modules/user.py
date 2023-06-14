@@ -1,10 +1,10 @@
-try:
-    from modules.data import *
-    from modules.validate_input import *
-    from modules.system_function import *
-    from tabulate import tabulate
-except ImportError:
-    pass
+import json
+import data as user_data
+from modules.validate_input import *
+from modules.system_function import *
+from tabulate import tabulate
+from datetime import datetime
+
 
 gender = {
     1: 'Nu',
@@ -23,7 +23,7 @@ status = {
 
 class User:
     def __init__(self) -> None:
-        self.dict_user = get_dict_user_from_json()
+        self.dict_user = user_data.get_dict_user_from_json()
         self.id = None
         self.username = None
         self.password = None
@@ -31,10 +31,9 @@ class User:
         self.phone_num = None
         self.mail = None
         self.gender = None #1: Female / 2: Male
-        self.address = None
         self.role = 0 #0: customer, 1: admin
         self.status = 1
-        self.ngay_khoi_tao = None
+        self.ngay_khoi_tao = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     def get_dict_tt_user(self):
         return {
@@ -64,7 +63,7 @@ class User:
                 f"{status[user['status']]}",
             ]
             data.append(row)
-        table = tabulate(data, header, tablefmt="grid")
+        table = tabulate(data, header, tablefmt="fancy_grid")
         # clear_screen()
         print("DANH SACH NGUOI DUNG")
         print(table)
@@ -89,7 +88,7 @@ class User:
 
                     json.dump(self.dict_user, file, indent=4)
                 #Renew data
-                self.dict_user = get_dict_user_from_json()
+                self.dict_user = user_data.get_dict_user_from_json()
             # print("Xóa thành công!")
             except Exception as err:
                 print(f"Loi: {err}")

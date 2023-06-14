@@ -1,3 +1,5 @@
+from datetime import datetime
+
 status = {
     0: "Khong hoat dong",
     1: 'Hoat dong'
@@ -18,7 +20,7 @@ class DienThoai:
         self.so_luong = None
         self.gia = None
         self.nam_sxuat = None
-        self.ngay_khoi_tao = None
+        self.ngay_khoi_tao = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         self.status = 1  # Automatically activated after creation
 
     def get_id(self):
@@ -83,6 +85,18 @@ class DienThoai:
             result += f"\nSo luong: {format(self.get_so_luong(), ',d').replace(',', '.')}"
         if self.nam_sxuat is not None:
             result += f"\nNam san xuat: {self.get_nam_sxuat()}"
+        return result
+
+    def show_tt_dt(self, dt = None):
+        if dt is None:
+            dt = self.get_dict_thongtin_dienthoai()
+        result = f"Dien thoai: {dt['ten']}"
+        result += f"\nHang: {dt['hang']}"
+        result += f"\nDung luong: {format(dt['dung_luong'], ',d').replace(',', '.')} GB"
+        result += f"\nRAM: {format(dt['ram'], ',d').replace(',', '.')} GB"
+        result += f"\nGia: {format(dt['gia'], ',d').replace(',', '.')}VND"
+        result += f"\nSo luong: {format(dt['so_luong'], ',d').replace(',', '.')}"
+        result += f"\nNam san xuat: {dt['nam_sxuat']}"
         return result
 
     def get_dict_thongtin_dienthoai(self):

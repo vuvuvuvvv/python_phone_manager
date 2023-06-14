@@ -8,3 +8,6 @@ from modules.data import *
 from modules.dien_thoai import * 
 from modules.product import *
 from modules.user import *
+from modules.cart import *
+from modules.order import *
+from modules.checkout import *
