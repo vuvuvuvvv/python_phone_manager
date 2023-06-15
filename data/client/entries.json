@@ -8,7 +8,7 @@
             "mail": "d@d.d",
             "phone_num": "1234567889",
             "gender": 2,
-            "role":1,
+            "role": 1,
             "status": 1,
             "ngay_khoi_tao": "2023-06-12 15:21:14"
         },
@@ -20,7 +20,7 @@
             "mail": "admin@email.com",
             "phone_num": "0835792003",
             "gender": 2,
-            "role":1,
+            "role": 1,
             "status": 1,
             "ngay_khoi_tao": "2023-06-12 15:21:14"
         },
@@ -32,21 +32,21 @@
             "mail": "d@f.c",
             "phone_num": "1234567890",
             "gender": 1,
-            "role":1,
+            "role": 1,
             "status": 1,
             "ngay_khoi_tao": "2023-06-12 15:21:14"
         }
     ],
     "list_client": [
         {
-            "username": "cong",
+            "username": "vuvuvuvvv",
             "password": "123456789",
             "id": 2,
-            "name": "Congdeptraii",
-            "mail": "d@2.c",
-            "phone_num": "1234567890",
+            "name": "Th\u1ebf V\u0169",
+            "mail": "nguyenvu260502@gmail.com",
+            "phone_num": "84737373737",
             "gender": 2,
-            "role":0,
+            "role": 0,
             "status": 1,
             "ngay_khoi_tao": "2023-06-12 15:21:14"
         },
@@ -57,8 +57,8 @@
             "name": "Pham Thanh Cong",
             "mail": "h@d.c",
             "phone_num": "0011223344",
-            "gender": 2,
-            "role":0,
+            "gender": 1,
+            "role": 0,
             "status": 1,
             "ngay_khoi_tao": "2023-06-12 15:21:14"
         },
@@ -70,7 +70,7 @@
             "mail": "test@email.com",
             "phone_num": "0987654321",
             "gender": 2,
-            "role":0,
+            "role": 0,
             "status": 1,
             "ngay_khoi_tao": "2023-06-12 15:21:14"
         }

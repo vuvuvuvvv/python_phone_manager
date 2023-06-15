@@ -1,7 +1,8 @@
-from modules.data import *
-from modules.system_function import *
+import modules.data as c_data
+import modules.system_function as stf
 from tabulate import tabulate
-class Cart():
+from datetime import datetime
+class Cart:
     def __init__(self) -> None:
         self.user_id = None
         self.product = None
@@ -14,26 +15,35 @@ class Cart():
                 "product":self.product,
                 "quantity":self.quantity,
                 "status":self.status,
-                "ngay_khoi_tao":self.ngay_khoi_tao
+                "ngay_khoi_tao":datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             }
 
-    def show_cart(self) -> None:
+    def show_cart(self,title="GIỎ HÀNG",cart=None) -> None:
+        if cart is None:
+            cart = c_data.get_dict_cart_from_json()
         data = []
         header = ['Sản phẩm','Giá bán','Số lượng',"Đơn giá"]
         total_price = 0
-        for cart in get_dict_cart_from_json():
-            dienthoai = cart['product']
-            total_price += dienthoai['gia'] * cart['quantity']
+        for item in cart:
+            dienthoai = item['product']
+            total_price += dienthoai['gia'] * item['quantity']
             row = [
-                f"Dien thoai {dienthoai['ten']} {dienthoai['dung_luong']}GB RAM {dienthoai['dung_luong']}GB phien ban {dienthoai['nam_sxuat']}",
+                f"Điện thoại {dienthoai['ten']} {dienthoai['dung_luong']}GB RAM {dienthoai['dung_luong']}GB phiên bản {dienthoai['nam_sxuat']}",
                 f"{format(dienthoai['gia'], ',d').replace(',', '.')}VND",
-                f"{cart['quantity']}",
-                f"{format((dienthoai['gia'] * cart['quantity']), ',d').replace(',', '.')}VND",
+                f"{format(item['quantity'], ',d').replace(',', '.')}",
+                f"{format((dienthoai['gia'] * item['quantity']), ',d').replace(',', '.')}VND",
             ]
             data.append(row)
         table = tabulate(data, header, tablefmt="fancy_grid")
-        clear_screen()
-        print("GIO HANG")
+        stf.clear_screen()
+        print(title)
         print(table)
-        print(f"TONG THANH TOAN: {format(total_price, ',d').replace(',', '.')}VND")
+        print(f"TỔNG GIÁ: {format(total_price, ',d').replace(',', '.')}VND")
         print("---------------------------------------------------")
+    
+    def find_cart_item_in_cart_by_product(self,product):
+        cart = c_data.get_dict_cart_from_json()
+        for item in cart:
+            if item['product'] == product:
+                return item
+        return None

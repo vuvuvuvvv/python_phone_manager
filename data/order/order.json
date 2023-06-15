@@ -1,0 +1,21 @@
+{
+    "order": {
+        "2": [
+            {
+                "code": "404_G2U220230615230924",
+                "name": "T Vuuu",
+                "address": "lkajdalsk lkasjda lskdj lasdj",
+                "phone_number": "0364752512",
+                "products": [
+                    {
+                        "id": 1,
+                        "quantity": 12
+                    }
+                ],
+                "total_price": 144000000,
+                "ngay_khoi_tao": "2023-06-15 23:09:35",
+                "status": 1
+            }
+        ]
+    }
+}

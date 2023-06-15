@@ -7,12 +7,10 @@ status = {
 
 
 class DienThoai:
-    count = 0  # Tu dong tang
 
     def __init__(self):
         # Khi co tham chieu den class Dienthoai => count tang <=> id san pham tu tang
-        DienThoai.count += 1
-        self.id = DienThoai.count
+        self.id = None
         self.ten = None
         self.hang = None
         self.dung_luong = None
@@ -72,31 +70,31 @@ class DienThoai:
         self.ngay_khoi_tao = ngay_khoi_tao
 
     def __str__(self):
-        result = f"Dien thoai: {self.get_ten()}"
+        result = f"Điện thoại: {self.get_ten()}"
         if self.hang is not None:
-            result += f"\nHang: {self.get_hang()}"
+            result += f"\nHãng: {self.get_hang()}"
         if self.dung_luong is not None:
-            result += f"\nDung luong: {format(self.get_dung_luong(), ',d').replace(',', '.')} GB"
+            result += f"\nDung lượng: {format(self.get_dung_luong(), ',d').replace(',', '.')} GB"
         if self.ram is not None:
             result += f"\nRAM: {format(self.get_ram(), ',d').replace(',', '.')} GB"
         if self.gia is not None:
-            result += f"\nGia: {format(self.get_gia(), ',d').replace(',', '.')}VND"
+            result += f"\nGiá: {format(self.get_gia(), ',d').replace(',', '.')}VND"
         if self.so_luong is not None:
-            result += f"\nSo luong: {format(self.get_so_luong(), ',d').replace(',', '.')}"
+            result += f"\nSố lượng: {format(self.get_so_luong(), ',d').replace(',', '.')}"
         if self.nam_sxuat is not None:
-            result += f"\nNam san xuat: {self.get_nam_sxuat()}"
+            result += f"\nNăm sản xuất: {self.get_nam_sxuat()}"
         return result
 
     def show_tt_dt(self, dt = None):
         if dt is None:
             dt = self.get_dict_thongtin_dienthoai()
-        result = f"Dien thoai: {dt['ten']}"
-        result += f"\nHang: {dt['hang']}"
-        result += f"\nDung luong: {format(dt['dung_luong'], ',d').replace(',', '.')} GB"
+        result = f"Điện thoai: {dt['ten']}"
+        result += f"\nHãng: {dt['hang']}"
+        result += f"\nDung lượng: {format(dt['dung_luong'], ',d').replace(',', '.')} GB"
         result += f"\nRAM: {format(dt['ram'], ',d').replace(',', '.')} GB"
-        result += f"\nGia: {format(dt['gia'], ',d').replace(',', '.')}VND"
-        result += f"\nSo luong: {format(dt['so_luong'], ',d').replace(',', '.')}"
-        result += f"\nNam san xuat: {dt['nam_sxuat']}"
+        result += f"\nGiá: {format(dt['gia'], ',d').replace(',', '.')}VND"
+        result += f"\nSố lượng: {format(dt['so_luong'], ',d').replace(',', '.')}"
+        result += f"\nNăm sản xuất: {dt['nam_sxuat']}"
         return result
 
     def get_dict_thongtin_dienthoai(self):
