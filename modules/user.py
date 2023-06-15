@@ -62,7 +62,7 @@ class User:
             for user in get_all_user:
                 row = [
                     i,
-                    f"{'(Bạn)' if user['id'] == auth.session_user['id'] else ''} {user['name']}",
+                    f"{'(Bạn)' if user['id'] == user_data.get_session()['id'] else ''} {user['name']}",
                     f"{user['username']}",
                     f"{user['phone_num']}",
                     f"{user['mail']}",
@@ -81,7 +81,6 @@ class User:
             print("+-----------------------------+")
             print("| Không có nội dung hiển thị! |")
             print("+-----------------------------+")
-
 
     def delete_user(self,order_user):
         if len(self.list_dien_thoai) == 0:
@@ -128,7 +127,6 @@ class User:
         return None
     
     def edit_user(self, user = None) -> None:
-        auth = user_auth.Auth()
         #ten cac thuoc tinh
         lable_properties = ['Tên người dùng','Tên đăng nhập',"Mật khẩu",'Điện thoại','Email','Giới tính','Trạng thái',"Tất cả","Thoát"]
         #cac truong thuoc tinh cua user
@@ -147,11 +145,11 @@ class User:
         #Tim vi tri du lieu de thao tao voi file du lieu
         index = user_data.get_dict_user_from_json()[('list_client' if user_edited['role'] == 0 else "list_admin")].index(user_edited)
         stf.clear_screen()
-        self.xuat_tt_all_user(title="THÔNG TIN NGƯỜI DÙNG ĐANG SỬA",list_user=[user_edited])
+        self.xuat_tt_all_user(title="THÔNG TIN NGƯỜI DÙNG HIỆN TẠI",list_user=[user_edited])
 
         print("Chọn mục bạn muốn sửa: ")
         #Nếu là admin => Không cho chỉnh sửa trạng thái hoạt động của bản thân
-        if user_edited == auth.session_user:
+        if user_edited == user_data.get_session():
             lable_properties.pop(lable_properties.index('Trạng thái'))
             properties.pop(properties.index('status'))
         #In ra các lựa chọn
@@ -162,6 +160,8 @@ class User:
         select = vi.validate_amout_input_field(select,lable= lable,max=len(lable_properties))
         property = properties[select - 1]
         #Nhập
+        stf.clear_screen()
+        print("Thay đổi thông tin: ")
         if lable_properties[select - 1] == "Thoát" and property:
             return
         elif property is None:
@@ -222,7 +222,7 @@ class User:
             tmp_gender = input(lable)
             tmp_gender = vi.validate_amout_input_field(tmp_gender,lable,1,2) 
 
-            if user_edited != auth.session_user:
+            if user_edited != user_data.get_session():
                 lable_input = "Trạng thái (0: Không hoạt động | 1: Hoạt động):"
                 tmp_status = input(lable_input)
                 tmp_status = vi.validate_amout_input_field(tmp_status, lable_input,0,1)
@@ -293,15 +293,20 @@ class User:
             user_edited[property] = input(lable_input)
             user_edited[property] = vi.validate_amout_input_field(user_edited[property], lable_input,1,2)
         #Khong cho phep chinh sua trang thai hoat dong cua ban than
-        elif property == 'status' and user_edited != auth.session_user:
+        elif property == 'status' and user_edited != user_data.get_session():
             lable_input = "Trạng thái (0: Không hoạt động | 1: Hoạt động):"
             user_edited[property] = input(lable_input)
             user_edited[property] = vi.validate_amout_input_field(user_edited[property], lable_input,0,1)
         #Lưu vào data
         user_data.save_user_to_json_file(user_edited,index,user_edited['role'])
 
-        if user is None:
-            self.xuat_tt_all_user()
-        else:
-            self.xuat_tt_all_user(list_user=[user_data.get_dict_user_from_json()[('list_client' if user_edited['role'] == 0 else "list_admin")][index]])
-        print("Sửa thành công!")
+        if user_data.get_session()['role'] == 0:
+            user_data.save_session_to_json(user_edited)
+            self.edit_user(user_data.get_session())
+
+        if user_auth.Auth().is_admin():
+            if user is None:
+                self.xuat_tt_all_user()
+            else:
+                self.xuat_tt_all_user(list_user=[user_data.get_dict_user_from_json()[('list_client' if user_edited['role'] == 0 else "list_admin")][index]])
+        

@@ -1,7 +1,7 @@
 {
     "list_admin": [
         {
-            "username": "congg",
+            "username": "vu000000",
             "password": "12345678",
             "id": 1,
             "name": "cc",
@@ -14,7 +14,7 @@
         },
         {
             "username": "admin",
-            "password": "123456789",
+            "password": "00000000",
             "id": 3,
             "name": "unknown",
             "mail": "admin@email.com",
@@ -51,13 +51,13 @@
             "ngay_khoi_tao": "2023-06-12 15:21:14"
         },
         {
-            "username": "hellokitty",
-            "password": "11223344",
+            "username": "customer",
+            "password": "Thevu2002",
             "id": 5,
-            "name": "Pham Thanh Cong",
-            "mail": "h@d.c",
-            "phone_num": "0011223344",
-            "gender": 1,
+            "name": "Nguy\u1ec5n Th\u1ebf V\u0169",
+            "mail": "nguyenvu260502@gmail.com",
+            "phone_num": "0364752421",
+            "gender": 2,
             "role": 0,
             "status": 1,
             "ngay_khoi_tao": "2023-06-12 15:21:14"
@@ -66,7 +66,7 @@
             "username": "lmfao",
             "password": "daylapass",
             "id": 6,
-            "name": "Cong rat dep trai",
+            "name": "Congg c",
             "mail": "test@email.com",
             "phone_num": "0987654321",
             "gender": 2,

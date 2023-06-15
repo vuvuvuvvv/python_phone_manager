@@ -1,6 +1,6 @@
 import os
 from datetime import datetime
-import modules.auth as sys_auth
+import modules.data as dta
 
 # Function to clear the terminal screen
 def clear_screen():
@@ -12,4 +12,4 @@ def clear_screen():
         os.system('cls')
 
 def create_code_orders():
-    return f"404_G2U{sys_auth.Auth().session_user['id']}{datetime.now().strftime('%Y%m%d%H%M%S')}"
+    return f"404_G2U{dta.get_session()['id']}{datetime.now().strftime('%Y%m%d%H%M%S')}"

@@ -6,7 +6,7 @@ class Checkout:
     def checkout(self, list_item_in_cart = None):
         cart = co_cart.Cart() 
         if list_item_in_cart is None:
-            list_item_in_cart = co_data.get_dict_cart_from_json()
+            list_item_in_cart = co_data.get_cart_item_from_json()
         cart.show_cart(title="THÔNG TIN ĐƠN HÀNG",cart=list_item_in_cart)
         print("XÁC NHẬN THANH TOÁN?")
         print("1. Xác nhận")

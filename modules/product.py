@@ -60,7 +60,7 @@ class Product:
             #Nhap so loai dung luong
             print('----------------------------')
             print("NHẬP DUNG LƯỢNG CHO:")
-            print(str(dienthoai))
+            print(dienthoai.show_tt_dt())
             print('----------------------------')
             lable_input = "Số loại dung lượng: "
             so_dung_luong = input(lable_input)
@@ -96,7 +96,7 @@ class Product:
                 #Nhap so loai RAM cho loai dien thoai co dung luong vua nhap
                 print('----------------------------')
                 print("NHẬP RAM ĐIỆN THOẠI CHO:")
-                print(str(bansao_dt))
+                print(bansao_dt.show_tt_dt())
                 print('----------------------------')
                 lable_input = "Nhập RAM (GB): "
                 tmp_ram = input(lable_input)
@@ -109,7 +109,7 @@ class Product:
                 #Hoan thien gia ban, so luong, nam san xuat cho dien thoai 
                 print('----------------------------')
                 print('HOÀN THIỆN THÔNG TIN CHO: ')
-                print(str(bansao_dt))
+                print(bansao_dt.show_tt_dt())
                 #Gia ban
                 lable_input = "Giá bán (VND): "
                 tmp_gia = input(lable_input)
@@ -174,8 +174,12 @@ class Product:
                 print("+-----------------------------+")
         except Exception as err:
             print(f"Loi: {err}")
+        return
+
 
     def xoa_dien_thoai(self,order_phone) -> None:
+        stf.clear_screen()
+        self.xuat_dien_thoai()
         if len(prd_data.get_dict_product_from_json()) == 0:
             print("Danh sách điện thoại rỗng!")
         else:
@@ -272,15 +276,45 @@ class Product:
                     if item not in list_product:
                         list_product.append(item)
         return list_product
+    
+    def find_product_by_id(self, id) -> dict:
+        get_all_product = prd_data.get_dict_product_from_json()
+        for item in get_all_product:
+            if id == item['id']:
+                return item
+        return None
 
     #No return
-    def sap_xep_danh_sach_dien_thoai(self, property, reverse = False) -> None:
-        return sorted(prd_data.get_dict_product_from_json(),key=lambda x: x[property], reverse=reverse)
+    def sap_xep_danh_sach_dien_thoai(self,list_product = None) -> None:
+        self.xuat_dien_thoai(list_product=(list_product if list_product is not None else None))
+        lable_properties = ['Tên sản phẩm','Hãng sản xuất','Dung lượng','RAM','Giá bán','Số lượng','Năm sản xuất','Thời gian đăng bán']
+        properties = ['ten','hang','dung_luong','ram','gia','so_luong','nam_sxuat','ngay_khoi_tao']
+        print("Chọn mục bạn muốn sắp xếp: ")
+        for i in range (1, len(lable_properties) +1):
+            print(f"{i}. {lable_properties[i-1]}")
+        lable = "Chọn: "
+        select = input(lable)
+        select = vi.validate_amout_input_field(select,lable= lable,max=len(lable_properties))
+        property = properties[select - 1]
+        self.xuat_dien_thoai(list_product=(list_product if list_product is not None else None))
+        print("Sắp xếp theo: ")
+        if property in ['nam_sxuat','ngay_khoi_tao']:
+            print('1. Cũ nhất')
+            print('2. Mới nhất')
+        elif property in ['ten','hang']:
+            print('1. Từ a-z')
+            print('2. Từ z-a')
+        else:
+            print('1. Tăng dần')
+            print('2. Giảm dần')
+        lable = "Chọn: "
+        select = input(lable)
+        select = vi.validate_amout_input_field(select,lable,1,2)
+        return sorted(prd_data.get_dict_product_from_json(),key=lambda x: x[property], reverse=(True if select ==2 else False))
     
     def add_to_cart(self, list_product = None) -> None:
         stf.clear_screen()
         cart = prd_cart.Cart()
-        auth = prd_auth.Auth()
         dienthoai = prd_dt.DienThoai()
         if list_product is None:
             list_product = prd_data.get_dict_product_from_json()
@@ -288,8 +322,8 @@ class Product:
         lable = "Chọn sản phẩm thêm vào giỏ: "
         select = input(lable)
         select = vi.validate_amout_input_field(select,lable,1,len(list_product))
-        uid = auth.session_user['id']
-        current_cart = prd_data.get_dict_cart_from_json()
+        uid = prd_data.get_session()['id']
+        current_cart = prd_data.get_cart_item_from_json()
         product_selected = list_product[select - 1]
         cartitem = cart.find_cart_item_in_cart_by_product(product_selected)
         print("-------------------------------")
@@ -317,6 +351,7 @@ class Product:
             prd_data.save_cart_item_to_json_file(cart.get_cart_item())
         stf.clear_screen()
         cart.show_cart()
+        return
 
     def edit_product(self, list_product = None) -> None:
         if list_product is None:
@@ -330,7 +365,6 @@ class Product:
         edited_product = list_product[index]
         stf.clear_screen()
         self.xuat_dien_thoai(title="THÔNG TIN SẢN PHẨM SỬA",list_product=[edited_product])
-        # print(edited_product)
         lable_properties = ['Tên sản phẩm','Hãng sản xuất','Dung lượng','RAM','Giá bán','Số lượng','Năm sản xuất',"Trạng thái","Tất cả"]
         properties = ['ten','hang','dung_luong','ram','gia','so_luong','nam_sxuat',"status",None]
         print("Chọn mục bạn muốn sửa: ")

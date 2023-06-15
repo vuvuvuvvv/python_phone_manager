@@ -67,7 +67,7 @@
                 "ngay_khoi_tao": null
             }
         ],
-        "2": [
+        "3": [
             {
                 "product": {
                     "id": 4,
@@ -101,6 +101,25 @@
                 "quantity": 2938,
                 "status": 1,
                 "ngay_khoi_tao": "2023-06-15 18:29:01"
+            }
+        ],
+        "5": [
+            {
+                "product": {
+                    "id": 1,
+                    "ten": "Iphone 11",
+                    "hang": "Apple",
+                    "dung_luong": 64,
+                    "ram": 8,
+                    "so_luong": 10000,
+                    "gia": 12000000,
+                    "nam_sxuat": 2021,
+                    "status": 1,
+                    "ngay_khoi_tao": "2023-01-13 15:21:14"
+                },
+                "quantity": 2,
+                "status": 1,
+                "ngay_khoi_tao": "2023-06-16 02:07:13"
             },
             {
                 "product": {
@@ -115,26 +134,9 @@
                     "status": 1,
                     "ngay_khoi_tao": "2023-09-17 15:21:14"
                 },
-                "quantity": 27736,
+                "quantity": 10,
                 "status": 1,
-                "ngay_khoi_tao": "2023-06-15 18:30:19"
-            },
-            {
-                "product": {
-                    "id": 1,
-                    "ten": "Iphone 11",
-                    "hang": "Apple",
-                    "dung_luong": 64,
-                    "ram": 8,
-                    "so_luong": 10000,
-                    "gia": 12000000,
-                    "nam_sxuat": 2021,
-                    "status": 1,
-                    "ngay_khoi_tao": "2023-01-13 15:21:14"
-                },
-                "quantity": 2363,
-                "status": 1,
-                "ngay_khoi_tao": "2023-06-15 23:10:00"
+                "ngay_khoi_tao": "2023-06-16 02:08:12"
             }
         ]
     }
