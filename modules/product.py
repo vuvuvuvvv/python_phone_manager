@@ -9,7 +9,7 @@ import modules.system_function as stf
 import modules.validate_input as vi
 import modules.checkout as prd_checkout
 from tabulate import tabulate
-
+import sys
 
 status = {
     0: "Không hoạt động",
@@ -60,7 +60,7 @@ class Product:
             #Nhap so loai dung luong
             print('----------------------------')
             print("NHẬP DUNG LƯỢNG CHO:")
-            print(dienthoai.show_tt_dt())
+            print(str(dienthoai))
             print('----------------------------')
             lable_input = "Số loại dung lượng: "
             so_dung_luong = input(lable_input)
@@ -73,10 +73,12 @@ class Product:
                 # dienthoai sau khi luu
                 #
                 bansao_dt = copy.deepcopy(dienthoai)
-                bansao_dt.id = len(prd_data.get_dict_product_from_json() +1)
+                bansao_dt.id = ( (int(sorted(prd_data.get_dict_product_from_json(),key=lambda x:x['id'],reverse=True)[0]['id'])+1) if len(prd_data.get_dict_product_from_json()) > 0 else 1)
                 #Nhap dung luong
                 print('----------------------------')
-                print(f'Nhập loại dung lượng thứ {"nhất" if j == 0 else j+1}: ')
+                print(f'Nhập loại dung lượng thứ {"nhất" if j == 0 else j+1} cho: ')
+                print(str(bansao_dt))
+                print('----------------------------')
                 lable_input = "Nhập dung lượng (GB): "
                 tmp_dung_luong = input(lable_input)
                 tmp_dung_luong = vi.validate_amout_input_field(tmp_dung_luong, lable_input)
@@ -96,7 +98,7 @@ class Product:
                 #Nhap so loai RAM cho loai dien thoai co dung luong vua nhap
                 print('----------------------------')
                 print("NHẬP RAM ĐIỆN THOẠI CHO:")
-                print(bansao_dt.show_tt_dt())
+                print(str(bansao_dt))
                 print('----------------------------')
                 lable_input = "Nhập RAM (GB): "
                 tmp_ram = input(lable_input)
@@ -109,7 +111,7 @@ class Product:
                 #Hoan thien gia ban, so luong, nam san xuat cho dien thoai 
                 print('----------------------------')
                 print('HOÀN THIỆN THÔNG TIN CHO: ')
-                print(bansao_dt.show_tt_dt())
+                print(str(bansao_dt))
                 #Gia ban
                 lable_input = "Giá bán (VND): "
                 tmp_gia = input(lable_input)
@@ -134,69 +136,59 @@ class Product:
             del dienthoai
 
     def xuat_dien_thoai(self,title = "DANH SÁCH SẢN PHẨM", list_product = None) -> None:
-        try:
-            if list_product is None or len(list_product) != 0:
-                auth = prd_auth.Auth()
-                if list_product is None:
-                    list_product = prd_data.get_dict_product_from_json()
-                data = []
-                header = ['STT','Tên sản phẩm','Hãng sản xuất','Dung lượng','RAM','Giá bán','Số lượng','Năm sản xuất']
-                # Neu la Admin thi hien thi ca san pham khong con hoat dong va trang thai cua tat ca san pham
+        if list_product is None or len(list_product) != 0:
+            auth = prd_auth.Auth()
+            if list_product is None:
+                list_product = prd_data.get_dict_product_from_json()
+            data = []
+            header = ['STT','Tên sản phẩm','Hãng sản xuất','Dung lượng','RAM','Giá bán','Số lượng','Năm sản xuất']
+            # Neu la Admin thi hien thi ca san pham khong con hoat dong va trang thai cua tat ca san pham
+            if auth.is_admin():
+                header.append('Trạng thái')
+            i = 1
+            for dienthoai in list_product:
+                row = [
+                    i,
+                    f"{dienthoai['ten']} {dienthoai['dung_luong']} GB",
+                    f"{dienthoai['hang']}",
+                    f"{dienthoai['dung_luong']} GB",
+                    f"{dienthoai['ram']} GB",
+                    f"{format(dienthoai['gia'], ',d').replace(',', '.')}VND",
+                    f"{dienthoai['so_luong']}",
+                    f"{dienthoai['nam_sxuat']}"
+                ]
+                i+= 1
                 if auth.is_admin():
-                    header.append('Trạng thái')
-                i = 1
-                for dienthoai in list_product:
-                    row = [
-                        i,
-                        f"{dienthoai['ten']} {dienthoai['dung_luong']} GB",
-                        f"{dienthoai['hang']}",
-                        f"{dienthoai['dung_luong']} GB",
-                        f"{dienthoai['ram']} GB",
-                        f"{format(dienthoai['gia'], ',d').replace(',', '.')}VND",
-                        f"{dienthoai['so_luong']}",
-                        f"{dienthoai['nam_sxuat']}"
-                    ]
-                    i+= 1
-                    if auth.is_admin():
-                        row.append(f"{status[dienthoai['status']]}")
+                    row.append(f"{status[dienthoai['status']]}")
+                    data.append(row)
+                else:
+                    if dienthoai['status'] == 1:
                         data.append(row)
-                    else:
-                        if dienthoai['status'] == 1:
-                            data.append(row)
-                table = tabulate(data, header, tablefmt="fancy_grid")
-                stf.clear_screen()
-                print(title)
-                print(table)
-            else:
-                stf.clear_screen()
-                print("+-----------------------------+")
-                print("| Không có sản phẩm hiển thị! |")
-                print("+-----------------------------+")
-        except Exception as err:
-            print(f"Loi: {err}")
-        return
+            table = tabulate(data, header, tablefmt="fancy_grid")
+            stf.clear_screen()
+            print(title)
+            print(table)
+        else:
+            stf.clear_screen()
+            print("+-----------------------------+")
+            print("| Không có sản phẩm hiển thị! |")
+            print("+-----------------------------+")
 
 
-    def xoa_dien_thoai(self,order_phone) -> None:
+    def xoa_dien_thoai(self) -> None:
         stf.clear_screen()
         self.xuat_dien_thoai()
         if len(prd_data.get_dict_product_from_json()) == 0:
             print("Danh sách điện thoại rỗng!")
         else:
-            order_phone = input('Nhập STT điện thoai muốn xóa:')
-            order_phone = vi.validate_amout_input_field(order_phone)
-            try:
-                with open('./data/client/entries.json', 'w') as file:
-                    order_phone -= 1
-                    phone_deleted = prd_data.get_dict_product_from_json()[order_phone]
-                    index = prd_data.get_dict_product_from_json().index(phone_deleted)
-
-                    prd_data.get_dict_product_from_json().pop(index)
-
-                    json.dump(prd_data.get_dict_product_from_json(), file, indent=4)
-            # print("Xóa thành công!")
-            except Exception as err:
-                print(f"Loi: {err}")
+            lable = 'Nhập STT điện thoai muốn xóa:'
+            order_phone = input(lable)
+            order_phone = vi.validate_amout_input_field(order_phone,lable,max=len(prd_data.get_dict_product_from_json()))
+            with open('./data/product/product.json', 'r') as file:
+                data = json.load(file)
+            data['products'].pop(order_phone -1)
+            with open('./data/product/product.json', 'w') as file:
+                json.dump(data, file, indent=4)
 
     def buy_now(self,list_product = None):
         cart = prd_cart.Cart()

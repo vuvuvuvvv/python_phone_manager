@@ -82,25 +82,28 @@ class User:
             print("| Không có nội dung hiển thị! |")
             print("+-----------------------------+")
 
-    def delete_user(self,order_user):
-        if len(self.list_dien_thoai) == 0:
+    def delete_user(self):
+        all_user = user_data.get_dict_user_from_json()['list_admin'] + user_data.get_dict_user_from_json()['list_client']
+        if len(all_user) == 0:
             print("Danh sách người dùng rỗng!")
+            return
         else:
             order_user = input('Nhập STT người muốn xóa:')
             order_user = vi.validate_amout_input_field(order_user)
             try:
-                with open('./data/client/entries.json', 'w') as file:
-                    order_user -= 1
-                    all_user = user_data.get_dict_user_from_json()['list_admin'] + user_data.get_dict_user_from_json()['list_client']
-                    user_deleted = all_user[order_user]
-                    if user_deleted['role'] == 0:
-                        index = user_data.get_dict_user_from_json()['list_client'].index(user_deleted)
-                        user_data.get_dict_user_from_json()['list_client'].pop(index)
-                    else:
-                        index = user_data.get_dict_user_from_json()['list_admin'].index(user_deleted)
-                        user_data.get_dict_user_from_json()['list_admin'].pop(index)
+                with open('./data/client/entries.json', 'r') as file:
+                    data = json.load(file)
+                order_user -= 1
+                user_deleted = all_user[order_user]
+                if user_deleted['role'] == 0:
+                    index = data['list_client'].index(user_deleted)
+                    data['list_client'].pop(index)
+                else:
+                    index = data['list_admin'].index(user_deleted)
+                    data['list_admin'].pop(index)
 
-                    json.dump(user_data.get_dict_user_from_json(), file, indent=4)
+                with open('./data/client/entries.json', 'w') as file:
+                    json.dump(data, file, indent=4)
             # print("Xóa thành công!")
             except Exception as err:
                 print(f"Lỗi: {err}")

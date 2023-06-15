@@ -13,8 +13,8 @@
             "ngay_khoi_tao": "2023-06-12 15:21:14"
         },
         {
-            "username": "admin",
-            "password": "00000000",
+            "username": "a",
+            "password": "a",
             "id": 3,
             "name": "unknown",
             "mail": "admin@email.com",
@@ -57,18 +57,6 @@
             "name": "Nguy\u1ec5n Th\u1ebf V\u0169",
             "mail": "nguyenvu260502@gmail.com",
             "phone_num": "0364752421",
-            "gender": 2,
-            "role": 0,
-            "status": 1,
-            "ngay_khoi_tao": "2023-06-12 15:21:14"
-        },
-        {
-            "username": "lmfao",
-            "password": "daylapass",
-            "id": 6,
-            "name": "Congg c",
-            "mail": "test@email.com",
-            "phone_num": "0987654321",
             "gender": 2,
             "role": 0,
             "status": 1,

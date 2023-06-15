@@ -195,7 +195,7 @@ class Program:
 
     def order_managerment_menu(self):
         stf.clear_screen()
-        self.product.xuat_dien_thoai()
+        self.order.show_order()
         print("Mời lựa chọn dịch vụ: ")
         #Coming soon
         # print("1. Chỉnh trạng thái đơn hàng")
@@ -204,7 +204,7 @@ class Program:
         select = input(lable)
         select = vi.validate_amout_input_field(select, lable, 1, 1)
         if select == 1:
-            self.product_management_menu()
+            self.admin_menu()
 
     def user_managerment_menu(self):
         stf.clear_screen()
@@ -241,9 +241,9 @@ class Program:
         select = vi.validate_amout_input_field(select, lable, 1, 6)
         if select == 1:
             self.product_management_menu()
-        elif select == 2:
-            self.order_managerment_menu()
         elif select == 3:
+            self.order_managerment_menu()
+        elif select == 2:
             self.user_managerment_menu()
         elif select == 4:
             self.user_menu()
@@ -255,11 +255,11 @@ class Program:
     def kill_program(self):
         print("-----------------------")
         print("Đếm ngược tự hủy trong:")
-        for i in range(4, 0, -1):
+        for i in range(3, 0, -1):
+            print(i)
             time.sleep(1)
             if i-1 == 0:
                 continue
-            print(i-1)
         print("BOOOMM BABE!")
         time.sleep(0.5)
         stf.clear_screen()

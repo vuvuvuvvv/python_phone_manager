@@ -1,11 +1,5 @@
 from datetime import datetime
 
-status = {
-    0: "Khong hoat dong",
-    1: 'Hoat dong'
-}
-
-
 class DienThoai:
 
     def __init__(self):
@@ -107,7 +101,7 @@ class DienThoai:
                 "so_luong" : self.so_luong,
                 "gia" : self.gia,
                 "nam_sxuat" : self.nam_sxuat,
-                "status" : status[self.status],
+                "status" : self.status,
                 "ngay_khoi_tao" : self.ngay_khoi_tao
             }
 

@@ -6,17 +6,14 @@ import modules.user as data_user
 def save_session_to_json(dict_user):
     with open("./data/session/session.json", "w") as json_file:
         json.dump(dict_user, json_file, indent=4)
-    return
 
 def get_session():
     with open("./data/session/session.json", "r") as json_file:
         return json.load(json_file)
-    return
 
 def delete_session():
     with open("./data/session/session.json", "w") as json_file:
         json.dump("",json_file, indent=4)
-    return
 
 def save_product_to_json_file(new_data=None, index=None):
     try:
@@ -33,7 +30,6 @@ def save_product_to_json_file(new_data=None, index=None):
                 print(f"Loi: {err}")
     except Exception as err:
         print(f"Loi: {err}")
-    return
 
 def truncate_product_data():
     try:
@@ -43,30 +39,30 @@ def truncate_product_data():
             json.dump(data, json_file)
     except Exception as err:
         print(f"Loi: {err}")
-    return
 
 def get_dict_product_from_json():
     try:
         with open("./data/product/product.json", "r") as product_json_file:
-            try:
-                data = json.load(product_json_file)
-                return data['products']
-            except Exception as err:
-                print(f"Loi: {err}")
-    except Exception as err:
-        print(f"Loi: {err}")
-    return
+            data = json.load(product_json_file)
+            test = len(data['products'])
+    except Exception:
+        truncate_product_data()
+
+    with open("./data/product/product.json", "r") as product_json_file:
+        data = json.load(product_json_file)
+    try:
+        return data['products']
+    except Exception:
+        with open("./data/product/product.json", "w") as json_file:
+            data['products'] = []
+            json.dump(data, json_file, indent=4)
+        return data['products']
 
 def truncate_user_data():
-    try:
-        with open("./data/client/entries.json", "w") as json_file:
-            data = {}
-            data['list_admin'] = []
-            data['list_client'] = []
-            json.dump(data, json_file, indent=4)
-    except Exception as err:
-        print(f"Loi: {err}")
-    return
+    data = {} 
+    data['products'] = []
+    with open("./data/product/product.json", "w") as json_file:
+        json.dump(data, json_file, indent=4)
 
 
 def get_dict_user_from_json():
@@ -80,7 +76,6 @@ def get_dict_user_from_json():
     except Exception as err:
         print(f"Loi: {err}")
     return
-
 
 def save_user_to_json_file(new_data=None, index=None, role=None):
     try:
@@ -99,7 +94,6 @@ def save_user_to_json_file(new_data=None, index=None, role=None):
     except Exception as err:
         print(f"Loi (in: {os.path.abspath(__file__)}): {err}")
     return
-
 
 def truncate_cart_data():
     data = {}
@@ -127,7 +121,6 @@ def get_cart_item_from_json():
             data['cart'][str(get_session()['id'])] = []
             json.dump(data, json_file, indent=4)
         return data['cart'][str(get_session()['id'])]
-    return
 
 
 def save_cart_item_to_json_file(cart_item):

@@ -64,36 +64,68 @@ class Order:
     def show_order(self,title=None,orders=None) -> None:
         od_stf.clear_screen()
         if orders is None:
-            orders = od_data.get_order_from_json()
+            orders = od_data.get_all_order_from_json()
         if len(orders)>0:
-            title = f'ĐƠN HÀNG CỦA BẠN - BẠN CÓ TẤT CẢ {len(orders)} ĐƠN HÀNG' if not od_auth.Auth().is_admin() else 'ĐƠN HÀNG HIỆN CÓ'
+            title = f'ĐƠN HÀNG CỦA BẠN:' if not od_auth.Auth().is_admin() else f'ĐƠN HÀNG HIỆN CÓ:'
             header = ['Sản phẩm','Giá bán','Số lượng',"Đơn giá"]
             product = od_product.Product()
             print(title)
-            for order in orders:
+            if od_auth.Auth().is_admin():
+                for key in orders:
+                    if len(orders[key]) == 0:
+                        continue
+                    print("===================================")
+                    print("===================================")
+                    print(f"Người dùng có ID: {key}")
+                    for order in orders[key]:
+                        print("-----------------------------------")
+                        print(f"Mã vận đơn: {order['code']}")
+                        print(f"Trạng thái: {self.order_status[order['status']]}")
+                        print(f"Tên người nhận: {order['name']}")
+                        print(f"Địa chỉ giao: {order['address']}")
+                        print(f"Số điện thoại liên hệ: {order['phone_number']}")
+                        print("Đơn hàng bao gồm:")
+                        data = []
+                        for item in order['products']:
+                            dienthoai = product.find_product_by_id(item['id'])
+                            row = [
+                                f"Điện thoại {dienthoai['ten']} {dienthoai['dung_luong']}GB RAM {dienthoai['dung_luong']}GB phiên bản {dienthoai['nam_sxuat']}",
+                                f"{format(dienthoai['gia'], ',d').replace(',', '.')}VND",
+                                f"{format(item['quantity'], ',d').replace(',', '.')}",
+                                f"{format((dienthoai['gia'] * item['quantity']), ',d').replace(',', '.')}VND",
+                            ]
+                            data.append(row)
+                        table = tabulate(data, header, tablefmt="fancy_grid")
+                        print(table)
+                        print(f"Tổng thanh toán: {format(order['total_price'], ',d').replace(',', '.')}VND")
+                    print("===================================")
+                    print("")
+                print("===================================")
+            else:
+                for order in orders:
+                    print("-----------------------------------")
+                    print(f"Mã vận đơn: {order['code']}")
+                    print(f"Trạng thái: {self.order_status[order['status']]}")
+                    print(f"Tên người nhận: {order['name']}")
+                    print(f"Địa chỉ giao: {order['address']}")
+                    print(f"Số điện thoại liên hệ: {order['phone_number']}")
+                    print("Đơn hàng bao gồm:")
+                    data = []
+                    for item in order['products']:
+                        dienthoai = product.find_product_by_id(item['id'])
+                        row = [
+                            f"Điện thoại {dienthoai['ten']} {dienthoai['dung_luong']}GB RAM {dienthoai['dung_luong']}GB phiên bản {dienthoai['nam_sxuat']}",
+                            f"{format(dienthoai['gia'], ',d').replace(',', '.')}VND",
+                            f"{format(item['quantity'], ',d').replace(',', '.')}",
+                            f"{format((dienthoai['gia'] * item['quantity']), ',d').replace(',', '.')}VND",
+                        ]
+                        data.append(row)
+                    table = tabulate(data, header, tablefmt="fancy_grid")
+                    print(table)
+                    print(f"Tổng thanh toán: {format(order['total_price'], ',d').replace(',', '.')}VND")
                 print("-----------------------------------")
-                print(f"Mã vận đơn: {order['code']}")
-                print(f"Trạng thái: {self.order_status[order['status']]}")
-                print(f"Tên người nhận: {order['name']}")
-                print(f"Địa chỉ giao: {order['address']}")
-                print(f"Số điện thoại liên hệ: {order['phone_number']}")
-                print("Đơn hàng bao gồm:")
-                data = []
-                for item in order['products']:
-                    dienthoai = product.find_product_by_id(item['id'])
-                    row = [
-                        f"Điện thoại {dienthoai['ten']} {dienthoai['dung_luong']}GB RAM {dienthoai['dung_luong']}GB phiên bản {dienthoai['nam_sxuat']}",
-                        f"{format(dienthoai['gia'], ',d').replace(',', '.')}VND",
-                        f"{format(item['quantity'], ',d').replace(',', '.')}",
-                        f"{format((dienthoai['gia'] * item['quantity']), ',d').replace(',', '.')}VND",
-                    ]
-                    data.append(row)
-                table = tabulate(data, header, tablefmt="fancy_grid")
-                print(table)
-                print(f"Tổng thanh toán: {format(order['total_price'], ',d').replace(',', '.')}VND")
-            print("-----------------------------------")
-            print("")
-            print("-----------------------------------")
+                print("")
+                print("-----------------------------------")
         else:
             od_stf.clear_screen()
             print("+-----------------------------+")
